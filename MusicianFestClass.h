@@ -1,126 +1,153 @@
-#pragma once
+	#pragma once
 #include <vector>
+#include <string>
+
 using namespace std;
 
 class Musician
 {
 private:
-	string Name;
-	int Salary;
-	int Age;
+	string name;
+	int salary;
+	int age;
+
 public:
-	string getName()
-	{
-		return this->Name;
-	}
-	int  getSalary()
-	{
-		return this->Salary;
-	}
-	int getAge()
-	{
-		return this->Age;
-	}
 	Musician() 
 	{
-		this->Name = "0";
-		this->Salary = 0;
-		this->Age = 0;
+		this->name = "0";
+		this->salary = 0;
+		this->age = 0;
 	};
-	Musician(string valueName, int valueSalary, int valueAge)
+	
+	Musician(string name, int salary, int age)
 	{
-		this->Name = valueName;
-		this->Salary = valueSalary;
-		this->Age = valueAge;
+		this->name = name;
+		this->salary = salary;
+		this->age = age;
 	}
+	
+	~Musician() 
+	{
+
+	};
+
+	string getName()
+	{
+		return this->name;
+	}
+	
+	int  getSalary()
+	{
+		return this->salary;
+	}
+	
+	int getAge()
+	{
+		return this->age;
+	}
+	
+	
+	bool operator==(Musician &musicianObject)
+	{
+		bool isNameEqual = this->getName() == musicianObject.getName();
+		bool isSalaryEqual = this->getSalary() == musicianObject.getSalary();
+		bool isAgeEqual = this->getAge() == musicianObject.getAge();
+		return isNameEqual && isSalaryEqual && isAgeEqual;
+	};
 };
 
 class MusicFestival
 {
 private:
-	int MaxBudget;
-	int CurrentBudget;
-	vector<Musician> arrMusician;
+	int maxBudget;
+	int currentBudget;
+	vector<Musician> vectorOfMusiciansOnFestival;
+
 public:
 	MusicFestival() 
 	{
 
 	};
-	MusicFestival(vector<Musician> arrMusician, int MaxBudget)
+
+	MusicFestival(vector<Musician> vectorOfMusiciansOnFestival, int MaxBudget)
 	{
-		this->arrMusician = arrMusician;
-		this->MaxBudget = MaxBudget;
-		for (int i = 0; this->CurrentBudget < MaxBudget && i < size(this->arrMusician); i++)
+		this->vectorOfMusiciansOnFestival = vectorOfMusiciansOnFestival;
+		this->maxBudget = MaxBudget;
+		for (int i = 0; this->currentBudget < MaxBudget && i < this->vectorOfMusiciansOnFestival.size(); i++)
 		{
-			this->CurrentBudget += this->arrMusician[i].getSalary();
+			this->currentBudget += this->vectorOfMusiciansOnFestival[i].getSalary();
 		};
 	};
+
 	~MusicFestival()
 	{
 	}
-	/*friend bool operator==(Musician &man1, Musician &man2)
+
+	int getMaxBudget()
 	{
-		bool a = man1.getName() == man2.getName();
-		bool b = man1.getSalary() == man2.getSalary();
-		bool c = man1.getAge() == man2.getAge();
-		return a && b && c;
-	};*/
-	int AlreadyIs(vector<Musician> arrMusician, Musician man)
+		return this->maxBudget;
+	};
+
+	int getCurrentBudget()
 	{
-		bool a;
-		int i = 0;
-		for (; i < size(this->arrMusician); i++)
+		return this->currentBudget;
+	};
+
+	int getMusicianIndexInVector(vector<Musician> vectorOfMusiciansOnFestival, Musician musicianObject)
+	{
+		bool isFoundInTheArray = false;
+		int musicianIndexInVector = 0;
+		for (; musicianIndexInVector < this->vectorOfMusiciansOnFestival.size(); musicianIndexInVector++)
 		{
-			a = ((arrMusician[i]).getName() == man.getName() &&
-			(arrMusician[i]).getSalary() == man.getSalary() &&
-			(arrMusician[i]).getAge() == man.getAge());
-			if (a)break;
-			else
-				;
+			isFoundInTheArray = vectorOfMusiciansOnFestival[musicianIndexInVector] == musicianObject;
+			if (isFoundInTheArray)break;
 		}
-		if (a)
-			return i;
+		if (isFoundInTheArray)
+			return musicianIndexInVector;
 		else
 			return -1;
 	}
-	void AddMusician(Musician man)
+	
+	void addMusician(Musician musicianObject)
 	{
-		if ((this->CurrentBudget + man.getSalary()) < (this->MaxBudget) && AlreadyIs(this->arrMusician, man) == -1)
+		if ((this->currentBudget + musicianObject.getSalary()) < (this->maxBudget) && getMusicianIndexInVector(this->vectorOfMusiciansOnFestival, musicianObject) == -1)
 		{
-			this->arrMusician.push_back(man);
-			CurrentBudget += man.getSalary();
-			cout << "Added a musician " << man.getName() << endl;
+			this->vectorOfMusiciansOnFestival.push_back(musicianObject);
+			currentBudget += musicianObject.getSalary();
+			cout << "Added a musician " << musicianObject.getName() << endl;
 		}
 		else
 		{
-			cout << "Cannot add a musician " << man.getName() <<endl;
+			cout << "Cannot add a musician " << musicianObject.getName() <<endl;
 		}
 	};
-	void DeleteMusician(Musician man)
+	
+	void deleteMusician(Musician musicianObject)
 	{
 		
-			int i = AlreadyIs(this->arrMusician, man);
-			if (i > -1)
+			int musicianIndexInVector = getMusicianIndexInVector(this->vectorOfMusiciansOnFestival, musicianObject);
+			if (musicianIndexInVector > -1)
 			{
-				for (; i < (size(this->arrMusician)) - 1; i++)
+				for (; musicianIndexInVector < this->vectorOfMusiciansOnFestival.size() - 1; musicianIndexInVector++)
 				{
-					arrMusician[i] = arrMusician[i + 1];
+					vectorOfMusiciansOnFestival[musicianIndexInVector] = vectorOfMusiciansOnFestival[musicianIndexInVector + 1];
 				}
-				arrMusician.pop_back();
-				cout << "Deleted a musician " << man.getName() << endl;
+				vectorOfMusiciansOnFestival.pop_back();
+				cout << "Deleted a musician " << musicianObject.getName() << endl;
 			}
 			else
 			{
-				cout << "Cannot delete a musician " << man.getName() << endl;
+				cout << "Cannot delete a musician " << musicianObject.getName() << endl;
 			};
 			
 	};
-	void Output()
+	
+	void outputMusiciansOnFestival()
 	{
-		for (int i = 0; i < (size(this->arrMusician)); i++)
+		for (int i = 0; i < this->vectorOfMusiciansOnFestival.size(); i++)
 		{
-			cout << "Musician #" << i+1 << " is " << this->arrMusician[i].getName() <<
-			". His Salary is " << (*this).arrMusician[i].getSalary() << ". He is " << this->arrMusician[i].getAge() << " years old" << endl;
+			cout << "Musician #" << i+1 << " is " << this->vectorOfMusiciansOnFestival[i].getName() <<
+			". His Salary is " << (*this).vectorOfMusiciansOnFestival[i].getSalary() << ". He is " << this->vectorOfMusiciansOnFestival[i].getAge() << " years old" << endl;
 		}
 	};
 };
