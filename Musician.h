@@ -13,16 +13,10 @@ private:
 
 public:
 	Musician();
-
 	Musician(string name, int salary, int age);
-
 	~Musician();
-
 	string getName();
-
 	int  getSalary();
-
 	int getAge();
-
 	bool operator==(Musician& musicianObject);
 };

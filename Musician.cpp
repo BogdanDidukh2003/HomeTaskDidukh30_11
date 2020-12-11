@@ -5,8 +5,6 @@
 
 using namespace std;
 
-
-
 Musician::Musician()
 {
 	this->name = "0";
@@ -48,4 +46,3 @@ bool Musician::Musician::operator==(Musician& musicianObject)
 	bool isAgeEqual = this->getAge() == musicianObject.getAge();
 	return isNameEqual && isSalaryEqual && isAgeEqual;
 };
-
