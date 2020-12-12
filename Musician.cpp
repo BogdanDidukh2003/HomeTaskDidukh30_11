@@ -39,7 +39,7 @@ int Musician::getAge()
 	return this->age;
 };
 
-bool Musician::Musician::operator==(Musician& musicianObject)
+bool Musician::operator==(Musician& musicianObject)
 {
 	bool isNameEqual = this->getName() == musicianObject.getName();
 	bool isSalaryEqual = this->getSalary() == musicianObject.getSalary();
